@@ -2,7 +2,23 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-
+    ofSetBackgroundColor(255);
+       ttf.load("mono.ttf", 8);
+       ofFile file("test_buoy-10.json");
+       if(file.exists()){
+           file >> jsn;
+           for(auto & buoy: jsn){
+               cout << "/////////////////////////////////////////////" << endl;
+               cout << buoy["name"] << endl; //this is the date / time
+               for (auto & data: buoy["data"]){
+                   // should just be one thing at this level
+                   for (auto & sensor: data){
+                       cout << sensor["name"] << + " :: " << sensor["value"] << endl;
+                   }
+               }
+           }
+          
+       }
 }
 
 //--------------------------------------------------------------

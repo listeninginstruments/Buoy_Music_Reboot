@@ -21,8 +21,16 @@ class ofApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
     
+    void drawSensorData();
+    
         ofJson jsn;
         ofTrueTypeFont ttf;
         std::string text;
+    
+    ofFile file;
+    
+    float text_x;
+    float text_y;
+    float base_y;
 		
 };

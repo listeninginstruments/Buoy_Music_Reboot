@@ -5,14 +5,16 @@ void ofApp::setup(){
     ofSetBackgroundColor(0);
     text_x = 50;
     text_y = 0;
-    base_y = 0;
+    
+    curr_n = 0;
+    
     
     
     ttf.load("mono.ttf", 6);
     
    
     
-       ofFile file("test_buoy-10.json");
+       ofFile file("test_buoy-1000.json");
     
        if(file.exists()){
            file >> jsn;
@@ -24,16 +26,14 @@ void ofApp::drawSensorData(){
     
     ofSetColor(255);
     
-    /*
-    base_y -= 3;
-    if(base_y <= -1200){
-        base_y = 0;
-    }
-    text_y = base_y;
-     */
     text_y = 0;
+    //cout << jsn.size() << endl;
     
-    for(auto & buoy: jsn){
+    
+    
+    ofJson buoy = jsn[curr_n];
+    
+    //for(auto & buoy: jsn){
         //cout << "/////////////////////////////////////////////" << endl;
         text_x = 50;
         text_y += 275;
@@ -55,11 +55,19 @@ void ofApp::drawSensorData(){
                 ofTranslate(text_x += 22, text_y);
                 ofRotateZDeg(-90);
                 ttf.drawString(sensor["name"], 0, 0);
+                ttf.drawString(sensor["value"], -50, 0);
+                ofDrawRectangle(-20, 0, -ofToFloat(sensor["value"]), -12 );
                 ofPopMatrix();
                 //cout << sensor["name"] << + " :: " << sensor["value"] << endl;
             }
         }
+    
+    curr_n++;
+    if(curr_n >= jsn.size()){
+        curr_n = 0;
     }
+    cout << curr_n << endl;
+    //}
 }
 
 //--------------------------------------------------------------

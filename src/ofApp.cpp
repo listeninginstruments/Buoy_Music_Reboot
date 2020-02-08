@@ -14,7 +14,7 @@ void ofApp::setup(){
     
    
     
-       ofFile file("test_buoy-1000.json");
+       ofFile file("test_buoy-1500.json");
     
        if(file.exists()){
            file >> jsn;
@@ -55,8 +55,15 @@ void ofApp::drawSensorData(){
                 ofTranslate(text_x += 22, text_y);
                 ofRotateZDeg(-90);
                 ttf.drawString(sensor["name"], 0, 0);
-                ttf.drawString(sensor["value"], -50, 0);
-                ofDrawRectangle(-20, 0, -ofToFloat(sensor["value"]), -12 );
+                ttf.drawString(sensor["value"], -35, 0);
+                
+                if(sensor["unit"] == "Degree"){
+                    ofTranslate(-50, 0);
+                    ofRotateZDeg(ofToFloat(sensor["value"]));
+                    ofDrawRectangle(0, 0, -200, -12 );
+                } else {
+                    ofDrawRectangle(-50, 0, -ofToFloat(sensor["value"]), -12 );
+                }
                 ofPopMatrix();
                 //cout << sensor["name"] << + " :: " << sensor["value"] << endl;
             }

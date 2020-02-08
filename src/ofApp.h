@@ -32,7 +32,5 @@ class ofApp : public ofBaseApp{
     float text_x;
     float text_y;
     float base_y;
-    
     int curr_n;
-		
 };

@@ -3,22 +3,22 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
     ofSetBackgroundColor(0);
+    delayStart(30);
+    
+    sender.setup(HOST, PORT);
+    
     text_x = 50;
     text_y = 0;
     
     curr_n = 0;
     
-    
-    
     ttf.load("mono.ttf", 6);
     
-   
+    ofFile file("test_buoy-1500.json");
     
-       ofFile file("test_buoy-1500.json");
-    
-       if(file.exists()){
-           file >> jsn;
-       }
+    if(file.exists()){
+        file >> jsn;
+    }
 }
 
 //--------------------------------------------------------------
@@ -78,6 +78,48 @@ void ofApp::drawSensorData(){
 }
 
 //--------------------------------------------------------------
+void ofApp::delayStart(float s){
+    count = 0;
+    delay_time = s;
+}
+
+//--------------------------------------------------------------
+void ofApp::delayTimer(){
+    count++;
+    if(count > delay_time){
+        delayFire();
+        count = 0;
+    }
+}
+
+//--------------------------------------------------------------
+void ofApp::delayFire(){
+    cout << "delay fire" << endl;
+
+    
+    wind = floor(ofRandom(80,89));
+    temp = floor(ofRandom(90,99));
+    ph = floor(ofRandom(100,109));
+    humidity = floor(ofRandom(110,119));
+    rain = floor(ofRandom(120,129));
+    
+    
+    sendVals();
+}
+
+//--------------------------------------------------------------
+void ofApp::sendVals(){
+    ofxOscMessage pd;
+    pd.setAddress("/buoy");
+    pd.addFloatArg(wind);
+    pd.addFloatArg(temp);
+    pd.addFloatArg(ph);
+    pd.addFloatArg(humidity);
+    pd.addFloatArg(rain);
+    sender.sendMessage(pd);
+}
+
+//--------------------------------------------------------------
 void ofApp::update(){
 
 }
@@ -85,6 +127,7 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
     drawSensorData();
+    delayTimer();
 }
 
 //--------------------------------------------------------------

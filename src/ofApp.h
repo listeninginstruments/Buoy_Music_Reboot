@@ -1,6 +1,10 @@
 #pragma once
 
 #include "ofMain.h"
+#include "ofxOsc.h"
+
+#define HOST "localhost"
+#define PORT 12345
 
 class ofApp : public ofBaseApp{
 
@@ -33,4 +37,15 @@ class ofApp : public ofBaseApp{
     float text_y;
     float base_y;
     int curr_n;
+    
+    void delayStart(float s);
+    void delayTimer();
+    void delayFire();
+    float delay_time;
+    float count;
+    
+    //------------------------------ OSC
+    ofxOscSender sender;
+    void sendVals();
+    float wind, temp, ph, humidity, rain;
 };

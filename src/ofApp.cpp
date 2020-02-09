@@ -2,8 +2,12 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
+    
+    ofSetFrameRate(60);
+    
     ofSetBackgroundColor(0);
-    delayStart(30);
+    
+    delayStart(60);
     
     sender.setup(HOST, PORT);
     
@@ -19,8 +23,29 @@ void ofApp::setup(){
     if(file.exists()){
         file >> jsn;
     }
+    
+    check_list[0] = "\"pH\"";
+    check_list[1] = "\"Wind Speed\"";
+    check_list[2] = "\"Surface Water Temperature\"";
+    check_list[3] = "\"Dissolved Oxygen Saturation (DOSat) at Surface\"";
+    check_list[4] = "\"Temp. at 36ft\"";
+    check_list[5] = "\"DOSat at 36ft\"";
+    check_list[6] = "\"Temp. at 82ft\"";
+    check_list[7] = "\"DOSat at 82ft\"";
+    check_list[8] = "\"Daily Rain\"";
+    check_list[9] = "\"Conductivity\"";
+    
+   
+    
 }
 
+//--------------------------------------------------------------
+void ofApp::advanceData(){
+    curr_n++;
+   if(curr_n >= jsn.size()){
+       curr_n = 0;
+   }
+}
 //--------------------------------------------------------------
 void ofApp::drawSensorData(){
     
@@ -54,6 +79,15 @@ void ofApp::drawSensorData(){
                 ofPushMatrix();
                 ofTranslate(text_x += 22, text_y);
                 ofRotateZDeg(-90);
+                
+                ofSetColor(255);
+                
+                for(int c=0; c<how_many_values; c++){
+                    if(check_list[c] == ofToString(sensor["name"]) ){
+                        ofSetColor(255, 0, 255);
+                    }
+                }
+                
                 ttf.drawString(sensor["name"], 0, 0);
                 ttf.drawString(sensor["value"], -35, 0);
                 
@@ -65,16 +99,34 @@ void ofApp::drawSensorData(){
                     ofDrawRectangle(-50, 0, -ofToFloat(sensor["value"]), -12 );
                 }
                 ofPopMatrix();
-                //cout << sensor["name"] << + " :: " << sensor["value"] << endl;
+                
+                //cout << sensor["name"] << " :: " << sensor["value"] << endl;
+                
+                
+                //cout << sensor["value"] << " :: " << ofToFloat(sensor["value"]) << endl;
+                
+                checkVals(ofToString(sensor["name"]), ofToFloat(sensor["value"]));
+                
+                
+                
+                //cout << sensor["name"] << endl;
             }
         }
     
-    curr_n++;
-    if(curr_n >= jsn.size()){
-        curr_n = 0;
-    }
-    cout << curr_n << endl;
+   
+    // cout << curr_n << endl;
     //}
+}
+
+//--------------------------------------------------------------
+void ofApp::checkVals(std::string name, float value){
+    // cout << name << " :: " << value << endl;
+    for(int v=0; v < how_many_values; v++){
+        if(name == check_list[v]){
+           // cout << "MATCHED: " << v << "       " << name << " :: " << value << endl;
+            valsToSend[v] = value;
+        }
+    }
 }
 
 //--------------------------------------------------------------
@@ -94,28 +146,54 @@ void ofApp::delayTimer(){
 
 //--------------------------------------------------------------
 void ofApp::delayFire(){
-    cout << "delay fire" << endl;
+    //cout << "delay fire" << endl;
 
     
+    //cout << "////////////////////////////////////////////////" << endl;
+    advanceData();
+    //cout << "////////////////////////////////////////////////" << endl;
+    
+    
+    /*
     wind = floor(ofRandom(80,89));
     temp = floor(ofRandom(90,99));
     ph = floor(ofRandom(100,109));
     humidity = floor(ofRandom(110,119));
     rain = floor(ofRandom(120,129));
+    */
+    /*
+    for(int i=0; i<10; i++){
+        valsToSend[i] = floor(ofRandom(0,100));
+    }
+     */
     
+    /*
+    for(int i=0; i<10; i++){
+        valsToSend[i] = floor(ofRandom(0,100));
+    }
+     */
     
     sendVals();
 }
 
 //--------------------------------------------------------------
 void ofApp::sendVals(){
+    
     ofxOscMessage pd;
     pd.setAddress("/buoy");
-    pd.addFloatArg(wind);
+    
+    for(int i=0; i<how_many_values; i++){
+        //cout << "from sendVals: " << valsToSend[i] << endl;
+        pd.addFloatArg(valsToSend[i]);
+    }
+    
+    /*
     pd.addFloatArg(temp);
     pd.addFloatArg(ph);
     pd.addFloatArg(humidity);
     pd.addFloatArg(rain);
+     */
+    
     sender.sendMessage(pd);
 }
 

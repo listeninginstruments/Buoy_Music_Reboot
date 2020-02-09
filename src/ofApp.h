@@ -6,6 +6,8 @@
 #define HOST "localhost"
 #define PORT 12345
 
+#define how_many_values 10
+
 class ofApp : public ofBaseApp{
 
 	public:
@@ -25,7 +27,9 @@ class ofApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
     
+    void advanceData();
     void drawSensorData();
+    
     
         ofJson jsn;
         ofTrueTypeFont ttf;
@@ -43,6 +47,11 @@ class ofApp : public ofBaseApp{
     void delayFire();
     float delay_time;
     float count;
+    
+    void checkVals(std::string name, float value);
+    std::string check_list[10];
+    
+    float valsToSend[how_many_values];
     
     //------------------------------ OSC
     ofxOscSender sender;

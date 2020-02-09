@@ -7,7 +7,7 @@ void ofApp::setup(){
     
     ofSetBackgroundColor(0);
     
-    delayStart(60);
+    delayStart(10);
     
     sender.setup(HOST, PORT);
     
@@ -18,7 +18,7 @@ void ofApp::setup(){
     
     ttf.load("mono.ttf", 6);
     
-    ofFile file("test_buoy-1500.json");
+    ofFile file("test_buoy-500-end.json");
     
     if(file.exists()){
         file >> jsn;
@@ -28,8 +28,8 @@ void ofApp::setup(){
     check_list[1] = "\"Wind Speed\"";
     check_list[2] = "\"Surface Water Temperature\"";
     check_list[3] = "\"Dissolved Oxygen Saturation (DOSat) at Surface\"";
-    check_list[4] = "\"Temp. at 36ft\"";
-    check_list[5] = "\"DOSat at 36ft\"";
+    check_list[4] = "\"Temp. at 43ft\""; //36ft sensors stops at some point in the summer
+    check_list[5] = "\"DOSat at 43ft\"";
     check_list[6] = "\"Temp. at 82ft\"";
     check_list[7] = "\"DOSat at 82ft\"";
     check_list[8] = "\"Daily Rain\"";
@@ -124,7 +124,30 @@ void ofApp::checkVals(std::string name, float value){
     for(int v=0; v < how_many_values; v++){
         if(name == check_list[v]){
            // cout << "MATCHED: " << v << "       " << name << " :: " << value << endl;
-            valsToSend[v] = value;
+            
+            // MAP HERE
+            float tmp_val = value;
+            
+            if(ofIsStringInString(name, "pH")){
+                //cout << "FOUND pH: " << value << endl;
+                tmp_val = ofMap(value, 7.0, 9.0, 30, 90);
+            }
+            
+            if(ofIsStringInString(name, "DOS")){
+                //cout << "FOUND DOS: " << value << endl;
+                tmp_val = ofMap(value, -1, 110, 20, 110);
+            }
+            
+            if(ofIsStringInString(name, "Rain")){
+                //cout << "FOUND Rain: " << value << endl;
+                if(value >= 0.1){
+                    tmp_val = ofMap(value, 0.1, 1.5, 40, 110);
+                }
+                //NOTE add limit in Max4Live so othing is triggered if 0 is sent
+            }
+            
+    
+            valsToSend[v] = tmp_val;
         }
     }
 }

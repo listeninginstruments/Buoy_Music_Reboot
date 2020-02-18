@@ -33,6 +33,9 @@ class ofApp : public ofBaseApp{
     
         ofJson jsn;
         ofTrueTypeFont ttf;
+        ofTrueTypeFont title;
+    
+    
         std::string text;
     
     ofFile file;

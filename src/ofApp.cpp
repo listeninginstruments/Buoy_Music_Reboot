@@ -7,7 +7,7 @@ void ofApp::setup(){
     
     ofSetBackgroundColor(0);
     
-    delayStart(10);
+    delayStart(60);
     
     sender.setup(HOST, PORT);
     
@@ -17,8 +17,12 @@ void ofApp::setup(){
     curr_n = 0;
     
     ttf.load("mono.ttf", 6);
+    title.load("mono.ttf", 18);
     
-    ofFile file("test_buoy-500-end.json");
+    // Rain Events at 9/11
+    
+    ofFile file("test_buoy-400-rain.json");
+    //ofFile file("test_buoy-1000.json");
     
     if(file.exists()){
         file >> jsn;
@@ -68,7 +72,8 @@ void ofApp::drawSensorData(){
         ofPushMatrix();
         ofTranslate(text_x, text_y);
         ofRotateZDeg(-90);
-        ttf.drawString(buoy["name"], 0, 0);
+        
+        title.drawString(buoy["name"], 0, 0);
         ofPopMatrix();
         
         //cout << buoy["name"] << endl; //this is the date / time
@@ -88,6 +93,7 @@ void ofApp::drawSensorData(){
                     }
                 }
                 
+               
                 ttf.drawString(sensor["name"], 0, 0);
                 ttf.drawString(sensor["value"], -35, 0);
                 
@@ -135,7 +141,7 @@ void ofApp::checkVals(std::string name, float value){
             
             if(ofIsStringInString(name, "DOS")){
                 //cout << "FOUND DOS: " << value << endl;
-                tmp_val = ofMap(value, -1, 110, 20, 110);
+                tmp_val = ofMap(value, -1, 110, 40, 80);
             }
             
             if(ofIsStringInString(name, "Rain")){

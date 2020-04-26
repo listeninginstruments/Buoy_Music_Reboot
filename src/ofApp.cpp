@@ -4,10 +4,11 @@
 void ofApp::setup(){
     
     ofSetFrameRate(60);
+    delayStart(60);
     
     ofSetBackgroundColor(0);
     
-    delayStart(60);
+   
     
     sender.setup(HOST, PORT);
     
@@ -21,7 +22,8 @@ void ofApp::setup(){
     
     // Rain Events at 9/11
     
-    ofFile file("test_buoy-400-rain.json");
+    ofFile file("2019_06_12-19.json");
+    //ofFile file("test_buoy-400-rain.json");
     //ofFile file("test_buoy-1000.json");
     
     if(file.exists()){

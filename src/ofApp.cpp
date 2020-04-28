@@ -4,7 +4,7 @@
 void ofApp::setup(){
     
     ofSetFrameRate(60);
-    delayStart(60);
+    delayStart(60 * .5); //5 but trying to speed up for capture
     
     ofSetBackgroundColor(0);
     
@@ -22,7 +22,12 @@ void ofApp::setup(){
     
     // Rain Events at 9/11
     
-    ofFile file("2019_06_12-19.json");
+    // Release 1 : 12-18
+    ofFile file("2019-all-days/190618-all.json");
+    
+    
+    
+    //ofFile file("2019_06_12-19.json");
     //ofFile file("test_buoy-400-rain.json");
     //ofFile file("test_buoy-1000.json");
     
@@ -48,8 +53,9 @@ void ofApp::setup(){
 //--------------------------------------------------------------
 void ofApp::advanceData(){
     curr_n++;
-   if(curr_n >= jsn.size()){
-       curr_n = 0;
+   if(curr_n >= jsn.size()-1){
+       //curr_n = 0;
+       ofExit();
    }
 }
 //--------------------------------------------------------------

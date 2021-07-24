@@ -3,11 +3,10 @@
 //$ch = curl_init("-X POST -F 'siteID=721' ");
 
 
-
 function getBuoyData($lakename, $siteid){
 	$ch = curl_init();
 
-	curl_setopt($ch, CURLOPT_URL,"https://v2.wqdatalive.com/public/470/sidebar");
+	curl_setopt($ch, CURLOPT_URL,"https://wqdatalive.com/public/470/sidebar");
 	curl_setopt($ch, CURLOPT_POST, 1);
 	curl_setopt($ch, CURLOPT_POSTFIELDS, "siteID=$siteid");
 

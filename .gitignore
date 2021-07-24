@@ -1,3 +1,5 @@
 .DS_Store
 bin/.DS_Store
 sftp-config.json
+data_php/buoy_data.sublime-project
+data_php/buoy_data.sublime-workspace

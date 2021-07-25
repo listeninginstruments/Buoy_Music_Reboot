@@ -67,13 +67,13 @@ function getBuoyData($siteid){
     //print_r($reform_json);
 
     $arduino_cleaned = array(
-    	"temp_air" => $reform_json["Air_Temperature"],
-    	"temp_top"=> $reform_json["Temperature_at_surface"],
-    	"temp_mid"=> $reform_json["Temperature_at_36_ft"],
-    	"temp_bot"=> $reform_json["Temperature_at_82_ft"],
-    	"dos_top" => $reform_json["DOSat_at_10_ft"],
-    	"dos_mid" => $reform_json["DOSat_at_36_ft"],
-    	"dos_bot" => $reform_json["DOSat_at_82_ft"]
+    	//"temp_air" => $reform_json["Air_Temperature"],
+    	"tt"=> $reform_json["Temperature_at_surface"],
+    	//"temp_mid"=> $reform_json["Temperature_at_36_ft"],
+    	"tb"=> $reform_json["Temperature_at_82_ft"],
+    	"dost" => $reform_json["DOSat_at_10_ft"],
+    	//"dos_mid" => $reform_json["DOSat_at_36_ft"],
+    	"dosb" => $reform_json["DOSat_at_82_ft"]
     	);
     //echo "[".$reform_json["Air_Temperature"]."]";
     echo "[";
